@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz Maker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body class="bg-gradient-to-r from-blue-600 to-blue-900 text-white min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="flex justify-between items-center p-6 bg-blue-800 text-white shadow-md">
+    <h1 class="text-3xl sm:text-4xl font-bold tracking-wide">Quiz Maker</h1>
+    <nav class="flex gap-3 text-lg font-medium">
+      <a href="#" onclick="showHome()" class="px-4 py-2 rounded hover:bg-blue-700 transition">Home</a>
+      <a href="#" onclick="showQuizForm()" class="px-4 py-2 rounded hover:bg-blue-700 transition">Create Quiz</a>
+      <a href="#" onclick="showQuizInstructions()" class="px-4 py-2 rounded hover:bg-blue-700 transition">Take Quiz</a>
+      <a href="#" onclick="showLeaderboard()" class="px-4 py-2 rounded hover:bg-blue-700 transition">Leaderboard</a>
+      <a href="#" onclick="logout()" class="px-4 py-2 rounded hover:bg-blue-700 transition">Logout</a>
+    </nav>
+  </header>
+
+  <!-- Homepage -->
+  <main id="home" class="flex-grow flex flex-col justify-center items-center text-center px-6">
+    <div class="w-full overflow-x-auto fade-up">
+      <h1 class="text-4xl md:text-5xl font-semibold mb-4 whitespace-nowrap text-center">
+        Create an awesome quiz in minutes
+      </h1>
+      <p class="text-lg mb-8">
+        Quiz Maker is the easiest way to make quizzes FREE!
+      </p>
+      <button onclick="showLogin()"
+        class="bg-gradient-to-r from-red-500 to-pink-500 text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-lg hover:scale-105 transition-transform">
+        Login to Start
+      </button>
+    </div>
+  </main>
+
+  <!-- App Section -->
+  <section id="app" class="max-w-3xl mx-auto bg-white text-black p-6 rounded-lg shadow-lg mt-6 hidden">
+
+    <!-- Login Section -->
+    <div id="login" class="flex justify-center items-center min-h-[50vh]">
+      <div class="w-full max-w-xs bg-gray-100 p-6 rounded-lg shadow-lg">
+        <h2 class="text-3xl font-bold mb-4 text-center">Login</h2>
+        <input type="text" id="username" placeholder="Username" class="border p-3 w-full mb-3 rounded text-lg" />
+        <input type="password" id="password" placeholder="Password" class="border p-3 w-full mb-4 rounded text-lg" />
+        <button onclick="login()" class="bg-blue-600 text-white px-4 py-2 text-base rounded hover:bg-blue-800 w-full">
+          Login
+        </button>
+      </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="hidden mt-6">
+
+      <!-- Instruction Page (Updated Design) -->
+      <div id="instruction-page" class="hidden mb-4 flex flex-col justify-center items-center">
+        <div class="bg-gray-100 p-6 rounded-lg w-full max-w-md text-center">
+          <h3 class="text-2xl font-semibold mb-4 text-blue-700">Quiz Instructions</h3>
+          <ul class="text-left mb-4 list-disc list-inside text-gray-700">
+            <li>Ensure a stable internet connection for a <br>smooth experience.</li>
+            <li>Please do not refresh the page during the quiz.</li>
+            <li>Best of Luck!</li>
+          </ul>
+          <div class="flex items-center mb-4">
+            <input type="checkbox" id="agree" class="mr-2" onchange="toggleStartButton()" />
+            <label for="agree" class="text-sm">I agree to the instructions</label>
+          </div>
+          <button onclick="startQuiz()" id="start-btn"
+            class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-800 w-full" disabled>
+            Start Quiz
+          </button>
+        </div>
+      </div>
+
+      <!-- Quiz Form -->
+      <div id="quiz-form" class="hidden mb-4 flex justify-center">
+        <div class="bg-gray-100 p-4 rounded-lg w-full max-w-sm min-h-[300px]">
+          <h3 class="text-2xl font-semibold mb-4 text-center text-blue-700">Create Quiz</h3>
+          <input type="text" id="question" placeholder="Question" class="border p-2 w-full mb-2 rounded text-base" />
+          <input type="text" id="option1" placeholder="Option 1" class="border p-2 w-full mb-2 rounded text-base" />
+          <input type="text" id="option2" placeholder="Option 2" class="border p-2 w-full mb-2 rounded text-base" />
+          <input type="text" id="option3" placeholder="Option 3" class="border p-2 w-full mb-2 rounded text-base" />
+          <input type="text" id="option4" placeholder="Option 4" class="border p-2 w-full mb-4 rounded text-base" />
+          <input type="number" id="correct" placeholder="Correct Option (1-4)"
+            class="border p-2 w-full mb-4 rounded text-base" />
+          <button onclick="submitQuestion()"
+            class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-800 w-full">Add Question</button>
+        </div>
+      </div>
+
+      <!-- Quiz Questions -->
+      <div id="quiz-container" class="hidden mb-4 flex justify-center">
+        <div class="bg-gray-100 p-4 rounded-lg w-full max-w-sm min-h-[300px]" id="quiz-questions">
+          <div id="timer" class="bg-blue-600 text-white px-3 py-2 rounded shadow mb-4 text-lg hidden text-center"></div>
+        </div>
+      </div>
+
+      <div class="flex justify-center">
+        <button id="submit-btn" onclick="submitQuiz()"
+          class="hidden bg-blue-500 text-white px-4 py-2 rounded mt-4 w-40">Submit Quiz</button>
+      </div>
+
+      <div id="score" class="text-lg mt-4 hidden"></div>
+      <div id="leaderboard" class="hidden mt-4 p-4 bg-gray-50 rounded-lg shadow"></div>
+    </div>
+
+  </section>
+
+  <!-- Success Popup -->
+  <div id="success-popup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white text-black p-6 rounded-lg shadow-lg text-center max-w-sm w-full">
+      <p class="text-xl font-semibold mb-4">You are successfully logged in!</p>
+      <button onclick="closePopup()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-800">
+        OK
+      </button>
+    </div>
+  </div>
+
+  
+
+  <!-- JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>
